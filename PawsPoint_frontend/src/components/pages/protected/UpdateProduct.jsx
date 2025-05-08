@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import Loading from '../../../shared/Loading';
 import axios from 'axios';
 import { backend_url } from '../../../utils/Config';
-import TextInput from '../../../shared/TextInput'; // Assuming this is a reusable component
+import TextInput from '../../../shared/TextInput'; 
 
 const UpdateProduct = () => {
   const location = useLocation(); // Get the location object from useLocation
@@ -204,6 +204,7 @@ const UpdateProduct = () => {
                 onChange={(e) => {
                   const file = e.target.files[0];
                   setPhoto(file);
+                 
                   handleImageUpload(file);
                 }}
                 className="bg-yellow-200"

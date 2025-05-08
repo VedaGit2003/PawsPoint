@@ -1,8 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // Context for authentication
+import axios from "axios";
+import { backend_url } from "../utils/Config";
+import { toast } from "react-toastify"; 
 
-const ProductWithOption = ({ pID, urls, product_name, price }) => {
+const ProductWithOption = ({ pID, urls, product_name, price,onAddToCartSuccess }) => {
   const navigate = useNavigate();
+  const [auth] = useAuth(); // Get user authentication details
+  const [cartItems, setCartItems] = useState([]); // Manage cart items locally
+
+
+  const handleAddToCart = async () => {
+    if (!auth?.user) {
+      toast.warn("Please login to add items to your cart.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${backend_url}/api/v1/cart/add`, {
+        userId: auth?.user?._id,
+        productId: pID,
+        quantity: 1,
+      });
+
+      if (response.data.success) {
+        setCartItems(response.data.cart.items); // Update local cart state
+        toast.success("Item added to cart!");
+
+        if (onAddToCartSuccess) {
+          onAddToCartSuccess();
+        }
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("Failed to add item to cart.");
+    }
+  };
 
   return (
     <div className="bg-gray-900 h-64 w-36 md:h-72 md:w-52 p-2 flex flex-col rounded-lg shadow-md hover:shadow-xl transition-all duration-300 mb-3">
@@ -26,6 +61,7 @@ const ProductWithOption = ({ pID, urls, product_name, price }) => {
 
       {/* Add to Cart Button */}
       <button
+       onClick={handleAddToCart}
         className="mt-2 w-full bg-purple-500 text-white font-semibold py-1.5 rounded-md hover:bg-purple-600 active:bg-purple-700 transition-all duration-200"
       >
         Add to Cart

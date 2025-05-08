@@ -46,7 +46,7 @@ const Payment = () => {
   
     const orderData = {
       user: auth.user._id,
-      seller: product.seller_Info,
+       seller: product.seller_Info,
       productId: product._id, 
       itemType: "Product",
       quantity: 1,

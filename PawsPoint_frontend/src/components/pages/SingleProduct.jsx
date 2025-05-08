@@ -3,6 +3,8 @@ import Wrapper from '../Wrapper/wrapper'
 import { useNavigate, useParams } from 'react-router-dom'
 import { backend_url } from '../../utils/Config'
 import { useAuth } from '../../context/AuthContext'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const SingleProduct = () => {
     const { pID } = useParams()
@@ -11,8 +13,31 @@ const SingleProduct = () => {
     const [error, setError] = useState(null)
     const [address, setAddress] = useState('')
     const [auth] = useAuth()
+    const [cart,setCart]=useState([])
 
     const navigate=useNavigate()
+
+
+    const addToCart=async()=>{
+        const userId=auth?.user?._id
+        try{
+          const response=await axios.post(`${backend_url}/api/v1/cart/add`,{
+             userId,
+             productId:pID,
+             quantity: 1
+          })
+          if (response.data.success){
+            toast.success("Product added to cart")
+          }
+          else{
+            toast.error("Product not added,error occured!")
+          }
+        }catch(e){
+            console.log(e)
+            toast.error("An error occur while adding to the cart")
+        }
+        
+    }
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -71,7 +96,9 @@ const SingleProduct = () => {
                                     >
                                         Buy Now
                                     </button>
-                                    <button className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors flex-1">
+                                    <button className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors flex-1"
+                                    onClick={addToCart}
+                                    >
                                         Add to Cart
                                     </button>
                                 </div> :

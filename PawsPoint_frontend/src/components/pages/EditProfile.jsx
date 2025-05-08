@@ -12,6 +12,7 @@ const EditProfile = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [orders, setOrders] = useState([]);
+  const [isUploading,setIsUploading]=useState(false)
 // Assuming role is not editable
 
   // Password fields
@@ -35,6 +36,7 @@ const EditProfile = () => {
 
   // Handle image upload to Cloudinary
   const handleImageUpload = async (file) => {
+    setIsUploading(true)
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'PawsPoint_image'); // Replace with your Cloudinary upload preset
@@ -69,6 +71,9 @@ const EditProfile = () => {
     } catch (error) {
       console.error(error);
       toast.error('Failed to upload image!');
+    }
+    finally{
+      setIsUploading(false)
     }
   };
 
@@ -198,10 +203,16 @@ const EditProfile = () => {
             </div>
 
             <button
-              className="w-full h-12 bg-green-500 text-white rounded-3xl hover:bg-green-600 transition duration-300"
-              type="submit"
+              className={`w-full h-12  text-white rounded-3xl hover:bg-green-600 transition duration-300
+                ${
+                  isUploading ? 
+                   'bg-gray-400 cursor-not-allowed'
+                  : 'bg-green-500 hover:bg-green-600'
+                }
+                `}
+              type="submit" disabled={isUploading} 
             >
-              Update Profile
+              {isUploading ?"Uploading Profile Picture":"Update Profile"}
             </button>
           </form>
         </div>

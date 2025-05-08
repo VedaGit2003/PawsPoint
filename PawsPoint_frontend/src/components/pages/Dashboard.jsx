@@ -45,9 +45,17 @@ const Dashboard = () => {
             <span className="font-bold">Joining Date:</span>
             {join}
           </h1>
-          <button onClick={() => navigate('/profile')} className="cursor-pointer my-4 uppercase rounded-full bg-white px-4 py-2 active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#F44336,-0.5rem_-0.5rem_#00BCD4] hover:animate animate-pulse transition">
-            Edit Profile
-          </button>
+          <div className='flex flex-row justify-center items-center gap-3'>
+            <button onClick={() => navigate('/profile')} className="cursor-pointer my-4 uppercase rounded-full bg-white px-4 py-2 active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#F44336,-0.5rem_-0.5rem_#00BCD4] hover:animate animate-pulse transition">
+              Edit Profile
+            </button>
+            <button onClick={() => navigate('/myOrders')} className="cursor-pointer my-4 uppercase rounded-full bg-white px-4 py-2 active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#F44336,-0.5rem_-0.5rem_#00BCD4] hover:animate animate-pulse transition">
+              My Orders
+            </button>
+            <button onClick={() => navigate('/cart')} className="cursor-pointer my-4 uppercase rounded-full bg-white px-4 py-2 active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#F44336,-0.5rem_-0.5rem_#00BCD4] hover:animate animate-pulse transition">
+              Cart
+            </button>
+          </div>
         </div>
 
         {/* Dashboard only for seller,admin,vet   */}
@@ -57,14 +65,14 @@ const Dashboard = () => {
             {
               role === 'seller' &&
               <>
-                <button onClick={()=>navigate('/dashboard/createproduct')} className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
+                <button onClick={() => navigate('/dashboard/createproduct')} className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
                   Create Product
                 </button>
-                <button onClick={()=>navigate('/dashboard/own-product')} className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
+                <button onClick={() => navigate('/dashboard/own-product')} className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
                   Update Product
                 </button>
-                <button onClick={()=>navigate('/dashboard')} className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
-                 Orders
+                <button onClick={() => navigate('/dashboard')} className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
+                  Orders
                 </button>
               </>
             }
@@ -74,7 +82,9 @@ const Dashboard = () => {
                 Create Category
               </button>
 
-                <button className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
+                <button className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md"
+                onClick={()=>navigate('/dashboard/admin/update-order')}
+                >
                   Order Update
                 </button>
 
@@ -89,9 +99,16 @@ const Dashboard = () => {
             {/* only for vets  */}
             {
               role === 'vet' &&
-              <button className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
-                Appointments
-              </button>
+              <div className='flex flex-row justify-center gap-2 flex-wrap'>
+                <button className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md"
+                onClick={()=>navigate('/vet-appointment-online')}
+                >
+                 Online Appointments
+                </button>
+                <button className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
+                 Offline Appointments
+                </button>
+              </div>
             }
 
           </div>

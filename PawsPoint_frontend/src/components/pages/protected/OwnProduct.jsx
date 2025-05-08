@@ -85,7 +85,7 @@ const OwnProduct = () => {
         {products.length > 0 ? (
           products.map((product, id) => (
             <div className="bg-slate-800 p-2" key={id}>
-              <h1 className="text-white">{product.name}</h1>
+              <h1 className="text-white">{product.name.slice(0,15)+"..."}</h1>
               <ProductCard ur={product.product_Images[0]} />
 
               <button
