@@ -9,11 +9,11 @@ import { useAuth } from '../../context/AuthContext';
 
 // Price ranges
 const priceRanges = [
-  { label: 'Under $300', min: 0, max: 300 },
-  { label: 'Under $500', min: 0, max: 500 },
-  { label: 'Under $700', min: 0, max: 700 },
-  { label: 'Under $1000', min: 0, max: 1000 },
-  { label: 'Under $2000', min: 0, max: 2000 },
+  { label: 'Under ₹300', min: 0, max: 300 },
+  { label: 'Under ₹500', min: 0, max: 500 },
+  { label: 'Under ₹700', min: 0, max: 700 },
+  { label: 'Under ₹1000', min: 0, max: 1000 },
+  { label: 'Under ₹2000', min: 0, max: 2000 },
 ];
 
 // Categories
@@ -24,43 +24,51 @@ const categories = [
   "Pet Grooming & Hygiene",
   "Pet Health & Wellness",
   "Pet Housing & Enclosures",
-  "Pet Training & Behavior",
-  "Pet Adoption & Services"
 ];
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
-  const [auth]=useAuth()
+  const [auth] = useAuth();
 
-  const userId=auth?.user?._id
+  const userId = auth?.user?._id;
 
   useEffect(() => {
     getAllProducts();
     getCartCount();
-  }, [cartCount]);
+  }, [page]);
 
   useEffect(() => {
-    applyFilters();
-  }, [selectedPrice, selectedCategory, products]);
+    setPage(1);
+    getAllProducts();
+  }, [selectedPrice, selectedCategory]);
 
-  // Fetch all products
   const getAllProducts = async () => {
     try {
-      const response = await axios.get(`${backend_url}/api/v1/products`);
+      const params = { page };
+      if (selectedCategory) params.category = selectedCategory;
+      if (selectedPrice) {
+        params["price[min]"] = selectedPrice.min;
+        params["price[max]"] = selectedPrice.max;
+      }
+
+      const response = await axios.get(`${backend_url}/api/v1/products`, {
+        params,
+      });
+
       setProducts(response.data.data);
-      setFilteredProducts(response.data.data);
+      setTotalPages(response.data.pagination?.totalPages || 1);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Fetch cart count
   const getCartCount = async () => {
     try {
       const response = await axios.get(`${backend_url}/api/v1/cart/getCarts/${userId}`);
@@ -69,37 +77,24 @@ const Shop = () => {
       console.log("Error fetching cart:", error);
     }
   };
-
-  // Filter products
-  const applyFilters = () => {
-    let filtered = [...products];
-
-    if (selectedPrice) {
-      filtered = filtered.filter(
-        product => product.price >= selectedPrice.min && product.price <= selectedPrice.max
-      );
-    }
-
-    if (selectedCategory) {
-      filtered = filtered.filter(
-        product => product.category === selectedCategory
-      );
-    }
-
-    setFilteredProducts(filtered);
+  // Clear filters
+  const clearFilters = () => {
+    setSelectedCategory(null);
+    setSelectedPrice(null);
+    setPage(1);
+    getAllProducts();
   };
-
-  return (
+return (
     <Wrapper current={'shop'}>
       <div className="w-full flex flex-col bg-gray-950 text-neutral-100 min-h-screen">
-        {/* Hero Image */}
+        {/* Banner */}
         <img
           src="https://supertails.com/cdn/shop/files/Big_sale_562b1227-ffb9-48e4-96fb-c5c866b149b9_1600x.png?v=1737615716"
           className="w-full h-52 sm:h-64 object-cover"
           alt="Sale Banner"
         />
-  
-        {/* Toggle Button for Mobile Filter */}
+
+        {/* Filter toggle (Mobile) */}
         <div className="md:hidden flex justify-end p-4">
           <button
             onClick={() => setShowFilters(!showFilters)}
@@ -108,8 +103,8 @@ const Shop = () => {
             {showFilters ? 'Hide Filters' : 'Show Filters'}
           </button>
         </div>
-  
-        {/* Filters + Products Layout */}
+
+        {/* Layout: Filters + Products */}
         <div className="flex flex-col md:flex-row w-full">
           {/* Sidebar Filters */}
           <aside
@@ -134,7 +129,7 @@ const Shop = () => {
                 </li>
               ))}
             </ul>
-  
+
             <h2 className="text-amber-400 text-lg font-semibold mt-6 mb-3">Filter by Price</h2>
             <ul className="space-y-2">
               {priceRanges.map((range, index) => (
@@ -152,23 +147,34 @@ const Shop = () => {
                 </li>
               ))}
             </ul>
+
+            {/* Clear Filters Button */}
+            <div className="mt-6 text-center">
+              <button
+                onClick={clearFilters}
+                className="bg-red-500 px-4 py-2 rounded-md text-white font-medium hover:bg-red-600 transition"
+              >
+                Clear Filters
+              </button>
+            </div>
           </aside>
-  
-          {/* Products Section */}
+
+          {/* Product Section */}
           <main className="flex-1 p-4 pt-0 md:pt-4">
             <h1 className="text-3xl text-amber-400 font-bold text-center mb-6">Happy Cuddle</h1>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((product, id) => (
+              {products.length > 0 ? (
+                products.map((product, id) => (
                   <div
                     key={id}
                     className="bg-gray-800 p-4 rounded-xl shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition duration-300"
                   >
                     <ProductWithOption
                       pID={product?._id}
-                      urls={product?.product_Images[0]}
+                      urls={product?.product_Images?.[0]}
                       product_name={product?.name}
-                      price={product?.price}
+                      price={`₹${product?.price}`}
                       onAddToCartSuccess={getCartCount}
                     />
                   </div>
@@ -177,9 +183,28 @@ const Shop = () => {
                 <p className="col-span-full text-center text-gray-400">No Product Available</p>
               )}
             </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center mt-8 space-x-2">
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setPage(index + 1)}
+                    className={`px-4 py-2 rounded-md ${
+                      page === index + 1
+                        ? 'bg-amber-500 text-white'
+                        : 'bg-gray-700 text-gray-300'
+                    } hover:bg-amber-600 transition`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            )}
           </main>
         </div>
-  
+
         {/* Floating Cart Button */}
         <div
           className="fixed bottom-5 right-5 bg-amber-500 text-white p-4 rounded-full shadow-xl flex items-center justify-center cursor-pointer hover:bg-amber-600 transition-all"
@@ -195,8 +220,6 @@ const Shop = () => {
       </div>
     </Wrapper>
   );
-  
-  
 };
 
 export default Shop;

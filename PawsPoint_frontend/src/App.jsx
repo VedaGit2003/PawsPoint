@@ -26,6 +26,11 @@ import OnlineAppointmentVet from './components/pages/protected/OnlineAppointment
 import AppointmentAcceptByVet from './components/pages/protected/AppointmentAcceptByVet';
 import VetVideoCall from './components/pages/protected/VetVideoCall';
 import AdminOrderPanel from './components/pages/protected/AdminOrderPanel';
+import CreatePets from './components/pages/protected/CreatePets';
+import Buypets from './components/pets/Buypets';
+import CategoryPets from './components/pets/CategoryPets';
+import MyPetOrders from './components/pets/MyPetOrders';
+import PetOrder from './components/pages/protected/PetOrder';
 
 function App() {
   const [cookies] = useCookies(['token']);
@@ -37,30 +42,38 @@ function App() {
         {cookie ? (
           <>
             <Route path="/" element={<Home />} />
-            <Route path='/search-product' element={<SearchResult/>} />
-            <Route path='/shop' element={<Shop/>} />
-            <Route path='/p/:pID' element={<SingleProduct/>} />
-            <Route path='/o/:pID' element={<OrderPage/>} />
-            <Route path='/cartOrder' element={<CartOrderPage/>} />
-            <Route path='/pay/:pID' element={<Payment/>} />
-            <Route path='/pay-multiple' element={<PaymentMultiple/>} />
-            <Route path='/paymentSuccess' element={<PaymentSuccess/>} />
-            <Route path='/paymentSuccessCart' element={<PaymentCartSuccess/>} />
-            <Route path='/dashboard' element={<Dashboard/>} />
-            <Route path='/profile' element={<EditProfile/>}/>
-            <Route path='/myOrders' element={<MyOrderDetails/>}/>
-            <Route path='/cart' element={<Cart/>}/>
-            <Route path='/vet-appointment-online' element={<OnlineAppointmentVet/>}/>
-            <Route path='/vet-appointment-online-update/:appointmentId' element={<AppointmentAcceptByVet/>}/>
-            <Route path='/vet-videocall/:appointmentId' element={<VetVideoCall/>}/>
+            <Route path='/search-product' element={<SearchResult />} />
+            <Route path='/shop' element={<Shop />} />
+            <Route path='/p/:pID' element={<SingleProduct />} />
+            <Route path='/o/:pID' element={<OrderPage />} />
+            <Route path='/cartOrder' element={<CartOrderPage />} />
+            <Route path='/pay/:pID' element={<Payment />} />
+            <Route path='/pay-multiple' element={<PaymentMultiple />} />
+            <Route path='/paymentSuccess' element={<PaymentSuccess />} />
+            <Route path='/paymentSuccessCart' element={<PaymentCartSuccess />} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/profile' element={<EditProfile />} />
+            <Route path='/myOrders' element={<MyOrderDetails />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/vet-appointment-online' element={<OnlineAppointmentVet />} />
+            <Route path='/vet-appointment-online-update/:appointmentId' element={<AppointmentAcceptByVet />} />
+            <Route path='/vet-videocall/:appointmentId' element={<VetVideoCall />} />
 
-            <Route path='/dashboard/createproduct' element={<CreateProduct/>}/>
-            <Route path='/dashboard/own-product' element={<OwnProduct/>}/>
-            <Route path='/dashboard/update-product' element={<UpdateProduct/>}/>
 
-            <Route path='/dashboard/admin/update-order' element={<AdminOrderPanel/>}/>
+             
+            <Route path='services/buy-pets' element={<Buypets/>} />
+            <Route path='services/buy-pets/:pet_Type' element={<CategoryPets/>} />
+<Route path='myPetOrders' element={<MyPetOrders/>} />
+            <Route path='/dashboard/createproduct' element={<CreateProduct />} />
+            <Route path='/dashboard/own-product' element={<OwnProduct />} />
+            <Route path='/dashboard/update-product' element={<UpdateProduct />} />
 
-    
+            <Route path='/dashboard/createpet' element={<CreatePets />} />
+
+            <Route path='/dashboard/admin/update-order' element={<AdminOrderPanel />} />
+            <Route path='/dashboard/admin/pet-order' element={<PetOrder />} />
+
+
             <Route path="*" element={<Home />} />
           </>
         ) : (

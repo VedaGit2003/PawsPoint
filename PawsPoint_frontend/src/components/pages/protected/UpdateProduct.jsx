@@ -192,7 +192,7 @@ const UpdateProduct = () => {
               <option value="Accessories">Accessories</option>
               <option value="Cages">Cages</option>
               <option value="Toys">Toys</option>
-              <option value="Travel">Travel</option>
+              <option value="Pharma">Pharma</option>
               <option value="Aquariums">Aquariums</option>
             </select>
             <div className="space-y-2 bg-yellow-200 p-1 rounded-lg">

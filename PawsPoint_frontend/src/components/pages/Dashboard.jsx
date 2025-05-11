@@ -52,6 +52,9 @@ const Dashboard = () => {
             <button onClick={() => navigate('/myOrders')} className="cursor-pointer my-4 uppercase rounded-full bg-white px-4 py-2 active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#F44336,-0.5rem_-0.5rem_#00BCD4] hover:animate animate-pulse transition">
               My Orders
             </button>
+            <button onClick={() => navigate('/myPetOrders')} className="cursor-pointer my-4 uppercase rounded-full bg-white px-4 py-2 active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#F44336,-0.5rem_-0.5rem_#00BCD4] hover:animate animate-pulse transition">
+              My Pet Orders
+            </button>
             <button onClick={() => navigate('/cart')} className="cursor-pointer my-4 uppercase rounded-full bg-white px-4 py-2 active:translate-x-0.5 active:translate-y-0.5 hover:shadow-[0.5rem_0.5rem_#F44336,-0.5rem_-0.5rem_#00BCD4] hover:animate animate-pulse transition">
               Cart
             </button>
@@ -74,12 +77,18 @@ const Dashboard = () => {
                 <button onClick={() => navigate('/dashboard')} className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
                   Orders
                 </button>
+            <button onClick={() => navigate('/dashboard/createpet')} className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
+                  Sell Pet
+                </button>
+                
               </>
             }
             {
               role === 'admin' &&
-              <><button className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md">
-                Create Category
+              <><button className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md"
+               onClick={()=>navigate('/dashboard/admin/pet-order')}
+              >
+Pet Order Details
               </button>
 
                 <button className="px-6 py-3 rounded-full bg-white text-emerald-600 font-semibold uppercase hover:bg-emerald-100 shadow-md"
