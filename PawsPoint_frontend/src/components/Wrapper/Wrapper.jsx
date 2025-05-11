@@ -3,7 +3,7 @@ import Navbar from '../../shared/Navbar'
 import Footer from '../../shared/Footer'
 
 
-const Wrapper = ({children,current}) => {
+const wrapper = ({children,current}) => {
   return (
     <div className='overflow-x-hidden h-screen w-screen'>
         <Navbar currentRoute={current}/>
@@ -13,4 +13,4 @@ const Wrapper = ({children,current}) => {
   )
 }
 
-export default Wrapper
+export default wrapper

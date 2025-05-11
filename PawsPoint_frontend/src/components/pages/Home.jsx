@@ -7,6 +7,7 @@ import CategoriesCard from '../../shared/CategoriesCard'
 import ProductCard from '../../shared/ProductCard'
 import { useAuth } from '../../context/AuthContext'
 import Fish from  '../../images/fish.mp4'
+// import Wrapper from '../Wrapper/wrapper'
 
 const Home = () => {
   const navigate=useNavigate()
